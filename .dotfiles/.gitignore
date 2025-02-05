@@ -1,0 +1,30 @@
+
+# SSH キーや認証情報はコミットしない
+.ssh/
+.ssh/config
+
+# シェルの履歴ファイルをコミットしない
+.bash_history
+.zsh_history
+
+# エディタの一時ファイル
+*.swp
+*.swo
+*~ 
+.nfs*
+
+# Mac 特有のファイル
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# バックアップ・キャッシュ系
+.cache/
+.local/
+.python_history
+.sqlite_history
+.wget-hsts
+
+# VS Code の一時ファイル
+.vscode/
+
