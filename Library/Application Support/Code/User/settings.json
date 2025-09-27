@@ -1,0 +1,60 @@
+{
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "editor.accessibilitySupport": "off",
+  "editor.fontSize": 14,
+  "editor.largeFileOptimizations": false,
+  "git.autofetch": true,
+  "git.suggestSmartCommit": false,
+  "github.copilot.editor.enableAutoCompletions": true,
+  "julia.enableTelemetry": true,
+  "julia.symbolCacheDownload": true,
+  "latex-workshop.latex.outDir": "build",
+  "settingsSync.ignoredSettings": [
+    "-julia.executablePath"
+  ],
+  "terminal.integrated.commandsToSkipShell": [
+    "github.copilot.terminal.suggestCommand",
+    "language-julia.interrupt"
+  ],
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.env.osx": {
+    "Q_NEW_SESSION": "1"
+  },
+  "vim.commandLineKeyBindings": [],
+  "workbench.colorTheme": "Tokyo Night Storm",
+  "workbench.editor.enablePreview": false,
+  "workbench.startupEditor": "none",
+  // --- Python 関連設定 ---
+  "python.createEnvironment.trigger": "off", // 仮想環境作成トリガー
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter", // デフォルトフォーマッター: Black
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit", // 保存時にRuffで自動修正
+      "source.organizeImports.ruff": "explicit" // 保存時にRuffでImport整理
+    },
+    "editor.language.server": "Ruff" // (推奨) 言語サーバー: Ruff
+  },
+  "ruff.importStrategy": "fromEnvironment", // 環境のRuffを使用
+  "ruff.lint.args": [],
+  "ruff.format.args": [],
+  "black-formatter.importStrategy": "fromEnvironment", // 環境のBlackを使用
+  "black-formatter.args": [],
+  "editor.formatOnSave": true, // 保存時にフォーマット
+  // 型チェックモード ("off", "basic", "strict")
+  "python.analysis.typeCheckingMode": "basic",
+  "files.insertFinalNewline": true, // ファイル末尾に改行
+  "files.trimTrailingWhitespace": true,
+  "makefile.configureOnOpen": true,
+  "terminal.integrated.fontSize": 14,
+  "debug.console.fontSize": 14,
+  "chat.editor.fontSize": 14,
+  "sundial.daySettings": {},
+  "themeswitcher.mappings": [],
+  "workbench.preferredDarkColorTheme": "Tokyo Night Storm",
+  "window.systemColorTheme": "auto",
+  "workbench.preferredHighContrastLightColorTheme": "Tokyo Night Light",
+  "workbench.preferredLightColorTheme": "Tokyo Night Light",
+  "workbench.editor.empty.hint": "hidden",
+  "docker.extension.enableComposeLanguageServer": false,
+  "github.copilot.nextEditSuggestions.enabled": true // 行末の空白を削除
+}

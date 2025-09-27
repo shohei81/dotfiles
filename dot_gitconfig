@@ -1,0 +1,7 @@
+[user]
+	name = shohei81
+	email = syouhei.y.01@gmail.com
+[push]
+	default = simple
+[init]
+	defaultBranch = main
