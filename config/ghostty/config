@@ -1,0 +1,14 @@
+# Ghostty configuration
+# Editable in place (out-of-store symlink via home-manager).
+# Full reference: https://ghostty.org/docs/config
+
+font-family = "Hack Nerd Font"
+font-size = 14
+
+theme = tokyonight
+
+background-opacity = 0.95
+window-padding-x = 8
+window-padding-y = 8
+
+macos-option-as-alt = true
