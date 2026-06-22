@@ -1,0 +1,85 @@
+# ~/.zshrc — interactive shell (Homebrew-based, post-nix)
+
+# Kiro CLI pre block
+[[ -f "$HOME/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
+# --- completions & plugins (Homebrew) ---
+fpath=(/opt/homebrew/share/zsh-completions $fpath)
+autoload -Uz compinit && compinit
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
+ZSH_AUTOSUGGEST_STRATEGY=(history)
+
+# History
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE="$HOME/.zsh_history"
+setopt SHARE_HISTORY HIST_IGNORE_ALL_DUPS
+
+# --- prompt & shell tools ---
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
+command -v fzf >/dev/null 2>&1 && source <(fzf --zsh) 2>/dev/null
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# --- aliases ---
+alias ls='lsd'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias g='git'
+alias ga='git add'
+alias gb='git branch'
+alias gc='git commit'
+alias gd='git diff'
+alias gp='git push'
+alias gs='git status'
+alias n='nvim'
+alias ff='fd | fzf'
+alias nf='nvim $(fd | fzf)'
+alias nd='nvim $(fd -t d | fzf)'
+
+# --- functions ---
+mkcd() { mkdir -p "$1" && cd "$1"; }
+
+# claude を agent-logs の consent ラッパー経由で
+claude() { if command -v agent-logs &>/dev/null; then agent-logs consent-dialog; [ $? -eq 3 ] && return 0; fi; command claude "$@"; }
+
+# yazi: 終了時に cd
+y() {
+  local tmp cwd
+  tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+  command yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d "" cwd < "$tmp"
+  [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
+}
+
+# --- VS Code / Kiro shell integration ---
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)" 2>/dev/null
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)" 2>/dev/null
+
+# --- greeting (fastfetch logo) ---
+if command -v fastfetch >/dev/null 2>&1; then
+  printf '\033[38;5;194m%s\033[0m\n' "$(cat <<'UNCERTAIN'
+██╗   ██╗███╗   ██╗ ██████╗███████╗██████╗ ████████╗ █████╗ ██╗███╗   ██╗
+██║   ██║████╗  ██║██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗██║████╗  ██║
+██║   ██║██╔██╗ ██║██║     █████╗  ██████╔╝   ██║   ███████║██║██╔██╗ ██║
+██║   ██║██║╚██╗██║██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║██║██║╚██╗██║
+╚██████╔╝██║ ╚████║╚██████╗███████╗██║  ██║   ██║   ██║  ██║██║██║ ╚████║
+ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+
+████████╗███████╗ █████╗
+╚══██╔══╝██╔════╝██╔══██╗
+   ██║   █████╗  ███████║
+   ██║   ██╔══╝  ██╔══██║
+   ██║   ███████╗██║  ██║
+   ╚═╝   ╚══════╝╚═╝  ╚═╝
+UNCERTAIN
+)"
+  fastfetch --logo none --structure "OS:Shell:Display:TerminalFont:CPU:GPU:Memory:Disk:LocalIp:Battery:Colors"
+fi
+
+# Kiro CLI post block
+[[ -f "$HOME/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "$HOME/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

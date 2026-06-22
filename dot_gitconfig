@@ -1,0 +1,10 @@
+[user]
+	name = shohei81
+	email = me@shohei81.dev
+[push]
+	default = simple
+[init]
+	defaultBranch = main
+[credential]
+	helper =
+	helper = !gh auth git-credential
