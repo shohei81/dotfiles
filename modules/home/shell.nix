@@ -7,6 +7,10 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
+      # nix-darwin: 設定を編集したら `switch` で適用、`update` で input更新+適用
+      switch = "darwin-rebuild switch --flake $HOME/nix-config";
+      update = "nix flake update --flake $HOME/nix-config && darwin-rebuild switch --flake $HOME/nix-config";
+
       ls = "lsd";
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -70,6 +74,13 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    enableZshIntegration = true;
+  };
+
+  # zoxide: smarter `cd`. enableZshIntegration wires up the `z` / `zi` commands
+  # (the plain binary alone does nothing without this init).
+  programs.zoxide = {
+    enable = true;
     enableZshIntegration = true;
   };
 }

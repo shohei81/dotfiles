@@ -23,6 +23,23 @@
     clojure
     jdk
 
+    # migrated from Homebrew (previously installed via `brew install`)
+    jq
+    lazygit
+    yazi
+    glow
+    hugo
+    ffmpeg
+    imagemagick
+    poppler-utils # pdftotext などの CLI
+    qrencode
+    resvg
+    rlwrap
+    _7zz # 7-Zip (7zz)
+    llama-cpp
+    cmake
+    swig
+
     # fun
     sl
   ];
