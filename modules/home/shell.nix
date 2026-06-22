@@ -110,9 +110,11 @@ UNCERTAIN
     enableZshIntegration = true;
   };
 
-  # yazi: enableZshIntegration が `y` 関数(終了時にcd)を提供する。
+  # yazi: enableZshIntegration が終了時にcdするラッパー関数を提供する。
+  # 既定名が将来 "yy"->"y" に変わるが、旧来どおり `y` を明示。
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
+    shellWrapperName = "y";
   };
 }
