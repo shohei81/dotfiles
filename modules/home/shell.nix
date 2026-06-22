@@ -7,9 +7,11 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      # nix-darwin: 設定を編集したら `switch` で適用、`update` で input更新+適用
-      switch = "darwin-rebuild switch --flake $HOME/nix-config";
-      update = "nix flake update --flake $HOME/nix-config && darwin-rebuild switch --flake $HOME/nix-config";
+      # nix-darwin: 設定を編集したら `switch` で適用、`update` で input更新+適用。
+      # darwin-rebuild の activation は root 必須なので sudo 付き。
+      # `nix flake update` は lock を書き換えるのでユーザー権限で実行(sudoの前)。
+      switch = "sudo darwin-rebuild switch --flake $HOME/nix-config";
+      update = "nix flake update --flake $HOME/nix-config && sudo darwin-rebuild switch --flake $HOME/nix-config";
 
       ls = "lsd";
       ".." = "cd ..";

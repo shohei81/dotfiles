@@ -2,12 +2,6 @@
 local wk = require("which-key")
 
 wk.add({
-    -- Avante用のキーマッピング
-    { "<leader>a", group = "Avante" },
-    { "<leader>aa", "<cmd>AvanteAccept<CR>", desc = "Accept Suggestion" },
-    { "<leader>ag", "<cmd>AvanteGenerate<CR>", desc = "Generate Suggestion" },
-    { "<leader>ar", "<cmd>AvanteRefresh<CR>", desc = "Refresh Suggestions" },
-
     -- Telescope用のキーマッピング
     { "<leader>f", group = "Telescope" },
     { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
