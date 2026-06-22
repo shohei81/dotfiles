@@ -64,15 +64,6 @@
       # claude を agent-logs の consent ラッパー経由で起動
       claude() { if command -v agent-logs &>/dev/null; then agent-logs consent-dialog; [ $? -eq 3 ] && return 0; fi; command claude "$@"; }
 
-      # --- Auto-attach tmux on interactive shells (skip inside editors / nested) ---
-      if command -v tmux >/dev/null 2>&1 \
-        && [[ $- == *i* ]] \
-        && [ -z "$TMUX" ] \
-        && [ "$TERM_PROGRAM" != "vscode" ] \
-        && [ "$TERM_PROGRAM" != "kiro" ]; then
-        tmux attach -t main 2>/dev/null || exec tmux new -s main
-      fi
-
       # --- Greeting (custom fastfetch logo) ---
       if command -v fastfetch >/dev/null 2>&1; then
         printf '\033[38;5;194m%s\033[0m\n' "$(cat <<'UNCERTAIN'
