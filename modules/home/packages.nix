@@ -16,8 +16,12 @@
     parallel
     fastfetch
 
-    # python toolchain (replaces pyenv / pipx / nodebrew)
+    # python toolchain (replaces pyenv / pipx)
     uv
+
+    # node toolchain (replaces nodebrew/nvm). global npm installs go to
+    # ~/.npm-global via NPM_CONFIG_PREFIX (see modules/home/default.nix)
+    nodejs
 
     # clojure (needs a JDK)
     clojure
@@ -26,7 +30,6 @@
     # migrated from Homebrew (previously installed via `brew install`)
     jq
     lazygit
-    yazi
     glow
     hugo
     ffmpeg

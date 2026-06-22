@@ -32,6 +32,9 @@
     };
 
     initContent = ''
+      # --- Kiro CLI (pre block) ---
+      [[ -f "$HOME/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
       # --- Homebrew (needed for casks: ghostty, gcloud, fonts, mactex) ---
       if [ -x /opt/homebrew/bin/brew ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -48,9 +51,18 @@
       # --- Rust (cargo) ---
       [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
+      # --- bun completions (bun は sessionPath で PATH に追加済み) ---
+      [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
       # --- VS Code / Kiro shell integration ---
       [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)" 2>/dev/null
       [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)" 2>/dev/null
+
+      # --- Helper functions (旧 zshrc から復元) ---
+      mkcd() { mkdir -p "$1" && cd "$1"; }
+
+      # claude を agent-logs の consent ラッパー経由で起動
+      claude() { if command -v agent-logs &>/dev/null; then agent-logs consent-dialog; [ $? -eq 3 ] && return 0; fi; command claude "$@"; }
 
       # --- Auto-attach tmux on interactive shells (skip inside editors / nested) ---
       if command -v tmux >/dev/null 2>&1 \
@@ -61,8 +73,29 @@
         tmux attach -t main 2>/dev/null || exec tmux new -s main
       fi
 
-      # --- Greeting ---
-      command -v fastfetch >/dev/null 2>&1 && fastfetch
+      # --- Greeting (custom fastfetch logo) ---
+      if command -v fastfetch >/dev/null 2>&1; then
+        printf '\033[38;5;194m%s\033[0m\n' "$(cat <<'UNCERTAIN'
+██╗   ██╗███╗   ██╗ ██████╗███████╗██████╗ ████████╗ █████╗ ██╗███╗   ██╗
+██║   ██║████╗  ██║██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗██║████╗  ██║
+██║   ██║██╔██╗ ██║██║     █████╗  ██████╔╝   ██║   ███████║██║██╔██╗ ██║
+██║   ██║██║╚██╗██║██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║██║██║╚██╗██║
+╚██████╔╝██║ ╚████║╚██████╗███████╗██║  ██║   ██║   ██║  ██║██║██║ ╚████║
+ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+
+████████╗███████╗ █████╗
+╚══██╔══╝██╔════╝██╔══██╗
+   ██║   █████╗  ███████║
+   ██║   ██╔══╝  ██╔══██║
+   ██║   ███████╗██║  ██║
+   ╚═╝   ╚══════╝╚═╝  ╚═╝
+UNCERTAIN
+)"
+        fastfetch --logo none --structure "OS:Shell:Display:TerminalFont:CPU:GPU:Memory:Disk:LocalIp:Battery:Colors"
+      fi
+
+      # --- Kiro CLI (post block) ---
+      [[ -f "$HOME/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "$HOME/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
     '';
   };
 
@@ -82,6 +115,12 @@
   # zoxide: smarter `cd`. enableZshIntegration wires up the `z` / `zi` commands
   # (the plain binary alone does nothing without this init).
   programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  # yazi: enableZshIntegration が `y` 関数(終了時にcd)を提供する。
+  programs.yazi = {
     enable = true;
     enableZshIntegration = true;
   };
